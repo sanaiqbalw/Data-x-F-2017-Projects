@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stayfe - Pathing</title>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='style/index.css') }}">
+	{{plinemap.js}}
+</head>
+<body>
+	<div id="fullpage">
+	    {{ plinemap.html }}
+		<form action="{{ url_for('pathing') }}" id="submit-form" method="post">
+		    <input type="text" name="start", placeholder="Start">
+		    <input type="text" name="dest", placeholder="Destination">
+		    <input type="submit", value="Get Path">
+		</form>
+	</div>
+</body>
+</html>

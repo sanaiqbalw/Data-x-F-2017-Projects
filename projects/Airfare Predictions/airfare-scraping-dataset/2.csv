@@ -1,0 +1,6 @@
+,Airline,Departure City,Arrival City,Date,Departure Time,Arrival Time,Price,Duration,Stops
+0,United,SFO,HNL,2018-04-01,9:00 AM,11:12 AM,669,5h 12m,Nonstop
+1,United,SFO,HNL,2018-04-01,12:50 PM,3:10 PM,669,5h 20m,Nonstop
+2,United,SFO,HNL,2018-04-01,4:05 PM,6:33 PM,669,5h 28m,Nonstop
+3,United,SFO,HNL,2018-04-01,7:40 AM,10:28 AM,669,5h 48m,Nonstop
+4,United,SFO,HNL,2018-04-01,7:00 PM,9:40 PM,669,5h 40m,Nonstop

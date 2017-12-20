@@ -1,0 +1,60 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	shows phpinfo
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>phpinfo</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <style type="text/css">
+		#topmenu img {float:none;}
+	</style>
+    
+    <script> 
+	   $(document).ready(function() {
+
+	   		// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+
+		  	// load the left menu bar  
+			 $("#includemenu").load("../ssi/topmenu.ssi"); 
+			 $("#phpinfo").load("../php/phpinfo.php");
+		});
+    </script> 
+
+</head> 
+ 
+<body> 
+
+
+<div id="thewrapper">
+        
+    <div id="includemenu"></div>
+    
+    <div class="thecontent">
+    <h1>php info</h1> 
+    
+    	<div id="phpinfo"></div>
+    
+    </div><!-- end thecontent -->
+</div><!-- wrapper -->
+     
+ 
+</body> 
+</html> 

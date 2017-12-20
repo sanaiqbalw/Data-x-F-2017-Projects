@@ -1,0 +1,23 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: arial;
+}
+
+#fullpage {
+	height: 100%;
+}
+
+form#submit-form {
+	text-align: center;
+	margin-top: 55%;
+}
+
+#plinemap{ 
+	height:80%;
+	width:80%;
+	top:0;
+	left:0;
+	position:absolute;
+	z-index:200; 
+}

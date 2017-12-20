@@ -1,0 +1,11 @@
+{
+	// bitcointalk, ripplecoin, litecointalk, ethereum
+	"community":"ripplecoin",
+	"pages": {
+		// startpage >= 1
+		"startpage": 1,
+
+		// endpage >= 1
+		"endpage": 1		
+	}
+}

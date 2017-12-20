@@ -1,0 +1,100 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	 displays images for an object_id in dataTables 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>images</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/table.css" rel="stylesheet" type="text/css">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+		.opsrow { overflow:hidden; }
+		#example {padding-top: 10px;}
+		#example td {padding: 2px;}
+		.dataTables_wrapper table thead{display:none;}
+	</style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>  
+    
+    <script> 
+		
+	  $(document).ready(function() {
+
+	  		// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+		  
+		  // load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+			
+			// get the object_id using javascript
+			url = window.location.href;
+			name = 'object_id';
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+			object_id = decodeURIComponent(results[2].replace(/\+/g, " "));
+
+			$('#example').DataTable( {
+				"ajax": "../php/images.php?object_id="+object_id,
+				"pageLength": 10,
+				// "sDom": 'lfrtip',
+				"columns": [
+					{ "data": "col1",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col2",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col3",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col4",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col5",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col6",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col7",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col8",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col9",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }},
+					{ "data": "col10",  "render": function(data, type, full, meta) {
+                		return '<span style="display:none;">' + data + '</span><img src="https://s3-us-west-1.amazonaws.com/rai-objects/'+ data +'"/ width="100px" height="100px">'; }}
+				],
+			}); // end DataTable 
+		}); // end document ready
+	
+    </script>
+	
+</head> 
+ 
+<body> 
+
+<div id="thewrapper">
+
+    <div id="includemenu"></div>
+    
+    <div class="thecontent">
+	    <h1>images</h1>                                       
+	    
+	    <table id="example">
+	    </table>          
+            
+	</div><!-- end thecontent -->
+</div><!-- wrapper -->
+     
+</body> 
+</html> 

@@ -1,0 +1,175 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+        match tag! quick review and management of thumbnails 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>match tag</title>	
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link href="../css/ops.css" rel="stylesheet" type="text/css">
+
+	<script src="../js/jquery-3.1.1.min.js"></script>
+
+	<style type="text/css">
+	    
+	    .keepthis {border: 3px solid #3F9; float:left; height:75px;margin:3px; width:75px; }
+	    .keepbox {background-color:#f0f0f0; clear:left; float:left; height:600px; margin:120px 10px 0 0; width:600px; }
+	    .keeplabel {clear:left;float:left; font-size: 18px;height:20px;  margin:10px 0 10px 20px;}
+	    .keepimages {clear:left; float:left; padding:5px; width:95%; }
+	    #messages_keep{clear:left; color:green; float:left; font-size:16px;  }
+	    #messages_thumbtag{clear:left; color:gray; float:left; font-size:16px;  }
+	    .objecttitle {clear:left; float:left; font-size: 20px;   }
+	    #repimage {height:75px; margin:-60px 0 10px 250px; position:absolute; width:75px;}
+	    .stthis {border: 3px solid yellow; float:left; height:75px;margin:3px; width:75px; }
+	    #yesbutton {background-color: #bbeb71; clear:left; float:left; margin:-60px 0 10px 150px; position:absolute;} 
+	    #nobutton {background-color: #f05648; clear:left; float:left; margin:-60px 0 10px 350px; position:absolute;} 
+	  
+	</style>
+	    
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+
+			// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+		
+			// include left menu bar 
+			$("#includemenu").load("../ssi/topmenu.ssi");
+
+			// load the SPT photos 
+			$(".keepimages").load( "../php/matchtag.php", function( response, status, xhr ) {
+
+				// move title to top of page 
+				$('.objecttitle').html($('.titletemp').html());
+				$('.titletemp').html('');
+
+				// get the object_id for representative photo
+				var objectfull = $(".objecttitle").text();
+				var object_id = objectfull.split(' ')[0];
+				if (object_id > 0) {
+					$('#repimage').attr('src', '../s3store/images/'+object_id+'.jpg');
+				}
+
+				// when loaded, clicking images changes class 
+				$(".keepthis").on('click', function() {
+					$currentclass = $(this).attr("class");
+					if ($currentclass == 'keepthis') {
+						$(this).toggleClass('keepthis stthis');
+					}
+					if ($currentclass == 'stthis') {
+						$(this).toggleClass('stthis keepthis');
+					}
+				return false;
+				});
+
+				// get the probability score
+				var prob_score = $('.keepthis').attr("src");
+				prob_score = prob_score.slice(prob_score.length-14, prob_score.length-11);
+				prob_score = parseInt(prob_score);
+				$(".keeplabel").append(' ' + prob_score);
+
+				$("#yesbutton").on('click', function() {
+					var i = 0;
+					var x = 0;
+					var thumbnumber = $('.keepthis').length;
+					// good images go to POS training folder
+					$.each($('.keepthis'),function() {
+						var currentId = $(this).attr('id');
+						$.ajax({
+							type: 'POST',
+							data: {photo_set:currentId},
+							url: '../php/speedreviewed.php',
+							success: function(results) {
+								i++;
+								$("#messages_keep").text(i + ' moved to POS training');
+								if (i == thumbnumber) {
+									location.reload();
+								}
+							}
+						}); 
+					}); 
+					// not matching images go for speedtag review
+					$.each($('.stthis'),function() {
+						var currentId = $(this).attr('id');
+						$.ajax({
+							type: 'POST',
+							data: {photo_set:currentId},
+							url: '../php/goto_thumbtag.php',
+							success: function(results) {
+								x++;
+								$("#messages_thumbtag").text(x + ' moved to POS training');
+							}
+						}); 
+					}); 
+				});  // end yes button
+
+				$("#nobutton").on('click', function() {
+					var x = 0;
+					var thumbnumber = $('.keepthis').length;
+					$.each($('.keepthis'),function() {
+						var currentId = $(this).attr('id');
+						$.ajax({
+							type: 'POST',
+							data: {photo_set:currentId},
+							url: '../php/stmove.php',
+							success: function(data) {
+								x++;
+								$("#messages_keep").text(x + ' moved to SPT for review');
+								if (x == thumbnumber) {
+									location.reload();
+								}
+							}
+						}); 
+						$('#'+currentId).hide();
+					}); 
+				});   // end no button
+
+				
+			});	// end stimages load 
+				  
+		});  // end document ready 
+
+	</script>
+
+</head> 
+ 
+<body>
+
+<div id="thewrapper">
+
+    <div id="includemenu"></div>
+    <div class="thecontent">
+    
+        <h1>match tag</h1>
+       	
+       	<div class="objecttitle"></div>
+
+        <div id="messages_keep"></div>
+        <div id="messages_thumbtag"></div>
+
+        <div class="keepbox">
+        	<img id="repimage" src="../images/blank256.png" alt="representative image"/>
+        	<button type="button" id="yesbutton" class="btn">yes</button>
+        	<button type="button" id="nobutton" class="btn">no</button>
+	        <div class="keeplabel">match</div>
+	        <div class="keepimages"></div>
+        </div>
+        
+
+    </div><!-- end thecontent -->          
+</div><!-- wrapper -->       
+	
+</body> 
+</html> 

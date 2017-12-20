@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Full Menu for {{restaurant}}</h1>
+  <hr>
+   <table class="table table-striped">
+    <tr>
+      <th>Menu Item</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>EatEasy Rating</th>
+      <th></th>
+    </tr>
+    {% for result in results %}
+      <tr>
+        <td>{{result.menu_item}}</td>
+        <td>{{result.description}}</td>
+        <td>{{result.price}}</td>
+        <td>{{result.rec_rating}}</td>
+        <td> 
+        </td>
+      </tr>
+    {% endfor %}
+   </table>
+{% endblock %}

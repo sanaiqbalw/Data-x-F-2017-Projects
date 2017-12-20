@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Dashboard</h1>
+  <h2><small>Welcome {{session.username}}</small></h2>
+  <hr>
+
+  <table class="table table-striped">
+    <tr>
+      <th scope="col">Restaurant<th>
+      <th scope="col">Menu Item</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">EatEasy Rating</th>
+      <th scope="col">My Rating</th>
+      <th scope="col">My Comments</th>
+      <th scope="col"><th>
+      <th scope="col"><th>
+      <th scope="col"></th>
+    </tr>
+    {% for result in results %}
+      <tr>
+        <th></th>
+        <td>{{result.rest_name}}</td>
+        <td>{{result.menu_item}}</td>
+        <td>{{result.description}}</td>
+        <td>{{result.price}}</td>
+        <td>{{result.rec_rating}}</td>
+        <td>{{result.user_rating}}</td>
+        <td>{{result.user_comments | safe}}</td>
+        <td><a href="edit_review/{{result.rest_name}}/{{result.menu_item}}" class="btn btn-default pull-right">Edit</a>
+        </td>
+        <td>
+          <form action="{{url_for('delete_review', restaurant=result.rest_name, menu_item=result.menu_item)}}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger">
+          </form>
+        </td>
+        <td></td>
+      </tr>
+    {% endfor %}
+
+  </table>
+{% endblock %}

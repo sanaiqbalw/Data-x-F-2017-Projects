@@ -1,0 +1,113 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	Task add form 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>task add</title>	
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+	    @media only screen and (max-device-width: 480px) {
+			#topmenu { display: none;}
+			.box .input-text{ color:#333; font-family: Arial, Helvetica, sans-serif; font-size: 24px; padding: 4px; width:400px; }
+			.box label{ color: #000; display:block; font-size: 24px; margin-bottom:10px;  }
+			.box label span{ display:block; float:left; padding-right:20px; padding-top:5px; text-align:right;  width:100px; }
+			.box fieldset { background-color: #F6F6F6;border:0; padding: 30px; }
+			.box textarea { font-size: 24px;  padding:4px; width:600px; }
+			.box text {font-family: Arial, Helvetica, sans-serif; font-size: 24px; padding:4px; }
+			#taskform {float:left;margin: 50px 0 0 50px;width: 100%;  }
+			.enterbutton {border:0;float:left; height: 70px;  margin-left:100px; width:164px; }
+			#task_priority {font-family:Arial, Helvetica, sans-serif;font-size:24px; }
+			#task_category {font-family:Arial, Helvetica, sans-serif;font-size:24px; width:400px; }
+			#task {font-family:Arial, Helvetica, sans-serif; font-size:18px; width:400px; }
+		}	
+	</style>
+	
+	<script src="../js/jquery-3.1.1.min.js"></script>
+    
+	<script>
+    
+		$(document).ready(function() {
+
+			// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+
+		  // load the left menu bar  
+		  $("#includemenu").load("../ssi/topmenu.ssi"); 
+		  
+		  		// submit the form 
+			$('#enterbutton').click(function() {		
+								
+				// post data to the task table
+				// the serialize() function outputs something like
+				// priority=0+immediate&task=my+task+here
+				$.ajax({                                      
+					url: '../php/taskadd.php', 
+					type: "POST",
+					data: $('#taskAdd').serialize(),
+					success: function(resultdata) {
+						window.location.replace("task.html");
+					},
+					error: function(resultdata){
+						 alert('error'+resultdata);
+					}
+				});  // end ajax 
+			});  // end enterbutton 
+		});  // doc ready
+    </script> 
+
+</head> 
+ 
+<body>
+
+<div id="thewrapper">
+
+    <div id="includemenu"></div>  
+           
+	<div class="thecontent">
+		
+	        <h1>add task</h1>
+
+	        <div class="box">
+	            
+	            <form class="boxform" id="taskAdd" name="taskAdd" method="POST" action="">
+	            <fieldset>
+	        
+	            <label for="priority"><span>priority</span>
+	            <select id="priority" name="priority">
+	            <option value="0 now">0 now</option>
+	            <option selected="selected" value="1 today">1 today</option>
+	            <option value="2 week">2 week </option>
+	            <option value="3 long">3 long</option>
+	            </select>
+	            </label>
+	    
+	            <label for="task"><span>task</span>
+	            <textarea id="task" name="task" rows="4" cols="35"></textarea>  
+	            </label>  
+	    
+	            <button type="button" id="enterbutton" class="btn">enter</button>
+	    
+	            </fieldset>
+	            </form>
+
+        	</div>
+    </div>   
+</div>      
+	
+</body> 
+</html> 

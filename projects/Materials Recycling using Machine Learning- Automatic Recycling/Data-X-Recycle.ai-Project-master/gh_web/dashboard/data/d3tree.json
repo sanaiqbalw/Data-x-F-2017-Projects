@@ -1,0 +1,556 @@
+{
+  "name": "trash",
+  "children": [
+    {
+      "name": "compost",
+      "children": [
+        {
+          "name": "mixed paper plastic",
+          "children": [
+            {
+              "name": "cup",
+              "children": [
+                {
+                  "name": "coffee cup compostable lid "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "organic",
+          "children": [
+            {
+              "name": "fruit",
+              "children": [
+                {
+                  "name": "apple "
+                },
+                {
+                  "name": "banana "
+                },
+                {
+                  "name": "blackberry "
+                },
+                {
+                  "name": "orange peel "
+                },
+                {
+                  "name": "strawberry "
+                }
+              ]
+            },
+            {
+              "name": "leaves",
+              "children": [
+                {
+                  "name": "green "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "paper",
+          "children": [
+            {
+              "name": "napkin",
+              "children": [
+                {
+                  "name": "brown "
+                },
+                {
+                  "name": "white "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "plastic",
+          "children": [
+            {
+              "name": "lid",
+              "children": [
+                {
+                  "name": "compostable coffee cup lid "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "plastic TPLA",
+          "children": [
+            {
+              "name": "cutlery",
+              "children": [
+                {
+                  "name": "knife spoon "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "wood",
+          "children": [
+            {
+              "name": "cork",
+              "children": [
+                {
+                  "name": "wine cork "
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hazardous",
+      "children": [
+        {
+          "name": "mixed",
+          "children": [
+            {
+              "name": "lightbulb",
+              "children": [
+                {
+                  "name": "compact florescent CFL mercury "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "mixed metal chemical",
+          "children": [
+            {
+              "name": "battery",
+              "children": [
+                {
+                  "name": "9vdc battery "
+                },
+                {
+                  "name": "aa aaa "
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "landfill",
+      "children": [
+        {
+          "name": "mixed metal plastic",
+          "children": [
+            {
+              "name": "electronics",
+              "children": [
+                {
+                  "name": "apple power supply "
+                },
+                {
+                  "name": "iphone headset "
+                }
+              ]
+            },
+            {
+              "name": "pen",
+              "children": [
+                {
+                  "name": "ink pen "
+                },
+                {
+                  "name": "marker "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "paper",
+          "children": [
+            {
+              "name": "food",
+              "children": [
+                {
+                  "name": "Brown Candy Glassine Cup "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "plastic",
+          "children": [
+            {
+              "name": "bag",
+              "children": [
+                {
+                  "name": "la tortilla factory zip lock bag "
+                }
+              ]
+            },
+            {
+              "name": "packaging",
+              "children": [
+                {
+                  "name": "mailing "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "plastic film",
+          "children": [
+            {
+              "name": "food package",
+              "children": [
+                {
+                  "name": "clear "
+                }
+              ]
+            },
+            {
+              "name": "food wrapper",
+              "children": [
+                {
+                  "name": "trader joes apple smoked bacon "
+                }
+              ]
+            },
+            {
+              "name": "packaging",
+              "children": [
+                {
+                  "name": "bubblewrap "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "polypropylene aluminum",
+          "children": [
+            {
+              "name": "food package",
+              "children": [
+                {
+                  "name": "cliff bar white chocolate macadamia nut "
+                },
+                {
+                  "name": "doritos cool ranch "
+                },
+                {
+                  "name": "famous amos chocolate chip "
+                },
+                {
+                  "name": "frito bag the original "
+                },
+                {
+                  "name": "organic sea salt popcorn "
+                }
+              ]
+            },
+            {
+              "name": "food wrapper",
+              "children": [
+                {
+                  "name": "snickers mini candy bar wrapper "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "polypropylene film",
+          "children": [
+            {
+              "name": "food wrapper",
+              "children": [
+                {
+                  "name": "candy bar wrapper toblerone "
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "other",
+      "children": [
+        {
+          "name": "other",
+          "children": [
+            {
+              "name": "other",
+              "children": [
+                {
+                  "name": "black background "
+                },
+                {
+                  "name": "hand "
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recycle",
+      "children": [
+        {
+          "name": "cardboard",
+          "children": [
+            {
+              "name": "box",
+              "children": [
+                {
+                  "name": "corrugated brown "
+                }
+              ]
+            },
+            {
+              "name": "box package",
+              "children": [
+                {
+                  "name": "bayer bepanthen plus krem "
+                }
+              ]
+            },
+            {
+              "name": "cup",
+              "children": [
+                {
+                  "name": "coffee cozy cup sleeve "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "metal aluminum ",
+          "children": [
+            {
+              "name": "can",
+              "children": [
+                {
+                  "name": "coke zero "
+                },
+                {
+                  "name": "fresca original citrus "
+                },
+                {
+                  "name": "sanpellegrino aranciata orange "
+                }
+              ]
+            },
+            {
+              "name": "food wrapper",
+              "children": [
+                {
+                  "name": "aluminum foil "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "metal tin",
+          "children": [
+            {
+              "name": "can",
+              "children": [
+                {
+                  "name": "albacore tuna "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "paper",
+          "children": [
+            {
+              "name": "box package",
+              "children": [
+                {
+                  "name": "boston baked beans candy "
+                }
+              ]
+            },
+            {
+              "name": "cup",
+              "children": [
+                {
+                  "name": "ecotainer "
+                }
+              ]
+            },
+            {
+              "name": "currency",
+              "children": [
+                {
+                  "name": "us currency bills "
+                }
+              ]
+            },
+            {
+              "name": "mail",
+              "children": [
+                {
+                  "name": "mail letters and envelopes "
+                }
+              ]
+            },
+            {
+              "name": "paper notes",
+              "children": [
+                {
+                  "name": "crumpled white paper "
+                },
+                {
+                  "name": "post-it notes "
+                }
+              ]
+            },
+            {
+              "name": "paper towel",
+              "children": [
+                {
+                  "name": "white "
+                }
+              ]
+            },
+            {
+              "name": "receipt",
+              "children": [
+                {
+                  "name": "white "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "plastic",
+          "children": [
+            {
+              "name": "bag",
+              "children": [
+                {
+                  "name": "grocery shopping bag "
+                }
+              ]
+            },
+            {
+              "name": "bottle",
+              "children": [
+                {
+                  "name": "crystal geyser sparkling mineral water "
+                },
+                {
+                  "name": "crystal geyser alpine spring water "
+                },
+                {
+                  "name": "honest tea honey green tea "
+                },
+                {
+                  "name": "la Victoria red taco sauce plastic7 "
+                },
+                {
+                  "name": "purity strawberry paradise "
+                }
+              ]
+            },
+            {
+              "name": "cap",
+              "children": [
+                {
+                  "name": "spray can cap black "
+                }
+              ]
+            },
+            {
+              "name": "cup",
+              "children": [
+                {
+                  "name": "jamba juice plastic5 "
+                },
+                {
+                  "name": "red plastic6 "
+                },
+                {
+                  "name": "talenti gelato plastic1 "
+                }
+              ]
+            },
+            {
+              "name": "food package",
+              "children": [
+                {
+                  "name": "delcabo mixed cherry tomatoes plastic1 pete "
+                },
+                {
+                  "name": "six-pac holder rings plastic#4 "
+                }
+              ]
+            },
+            {
+              "name": "jug",
+              "children": [
+                {
+                  "name": "mayer bros apple cider half gallon "
+                }
+              ]
+            },
+            {
+              "name": "lid",
+              "children": [
+                {
+                  "name": "plastic cup lid plastic1 "
+                }
+              ]
+            },
+            {
+              "name": "packaging",
+              "children": [
+                {
+                  "name": "sealed air fill-air extreme "
+                }
+              ]
+            },
+            {
+              "name": "product package",
+              "children": [
+                {
+                  "name": "hard rigid "
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "wood",
+          "children": [
+            {
+              "name": "wood scrap",
+              "children": [
+                {
+                  "name": " "
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

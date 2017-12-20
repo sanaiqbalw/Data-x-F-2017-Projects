@@ -1,0 +1,207 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+        speedtag with thumbnails 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>thumb tag</title>	
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link href="../css/ops.css" rel="stylesheet" type="text/css">
+
+	<script src="../js/jquery-3.1.1.min.js"></script>
+	<script src="//netsh.pp.ua/upwork-demo/1/js/typeahead.js"></script>
+
+	<style type="text/css">
+		.allthumbs {border: 3px dashed #E1E1E1; clear:left; float:left; height:570px; margin: 0 10px 0 0; width:450px;}
+		.keepthis {border: 3px solid #3F9;float:left; height:75px;margin:3px;opacity:1.0; width:75px; }
+	    .deletethis {border: 3px solid red; float:left; height:75px; margin:3px; opacity:0.6; width:75px; }
+	    .stthis {border: 3px solid white; float:left; height:75px; margin:3px; opacity:0.6; width:75px; }
+	    .done {border: 3px solid blue; float:left; height:75px; margin:3px; opacity:0.6; width:75px; }
+
+        #enterbutton.btn { background-color:#a4e444; margin-left:5px; }
+ 		#enterbutton.btn:hover { background-color:#d4f2a6;text-decoration:none; }
+        #deletebutton.btn { background-color:#f05648; }
+ 		#deletebutton.btn:hover { background-color:#f58e84;text-decoration:none; }
+ 		#addobjectbutton.btn { background-color:#0ec4f8; }
+ 		#addobjectbutton.btn:hover { background-color:#6bdbfa;text-decoration:none; }
+
+	    .box {float:left; height:500px; width:450px;}
+	    fieldset {border-width: 0; height:445px;}
+   		.searchbox {float:left; margin: 0 auto; margin-top:5px; width: 400px; }
+   		#statusmessage {font-size:16px; margin:30px 0 0 0; }
+        .tt-hint, .searchobjects { border: 2px solid #CCCCCC; border-radius: 4px; font-size: 16px; height: 45px;  line-height: 30px; outline: medium none; padding: 4px 12px; width: 350px; }
+        .tt-dropdown-menu {  background-color: #F1F1F1; border: 1px solid #CCCCCC; border-radius: 4px; color: #111; font-size: 18px; margin-top: 5px;  padding: 8px 12px;  width: 355px;  }
+        .tt-suggestion {clear:left; display:block; height: 80px;}
+        .tt-suggestion img { float:right; height:70px; width:70px; } 
+        /*.ttthetext {float:left; width:280px; } */
+        #toggleall {clear:left; color:#0ec4f8; cursor: pointer; float:left; font-size:18px; margin-top:10px; }
+	</style>
+	    
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+
+            // include left menu bar 
+			$("#includemenu").load("../ssi/topmenu.ssi");
+
+			// set up type-ahead search
+			$('input.searchobjects').typeahead({
+                remote: '../php/getObjectJson.php?query=%QUERY'
+            });
+
+			// load the SPT photos 
+			$(".allthumbs").load( "../php/speedtag_thumbs.php", function( response, status, xhr ) {
+
+				// when loaded, clicking images changes class 
+				$(".stthis").on('click', function() {
+					$currentclass = $(this).attr("class");
+					if ($currentclass == 'stthis') {
+						$(this).toggleClass('stthis keepthis');
+					}
+					if ($currentclass == 'deletethis') {
+						$(this).toggleClass('deletethis stthis');
+					}
+					if ($currentclass == 'keepthis') {
+						$(this).toggleClass('keepthis deletethis');
+					}
+				return false;
+				});
+
+				// ability to highlight all as .keepthis class 
+				$("#toggleall").on('click', function() {
+					$( ".stthis" ).attr('class', 'keepthis');
+				return false;
+				});
+
+				// sort by similarity of first image 
+				/*
+				$img1 = $(".stthis").first().attr('src'); 
+				$('.stthis img').each(
+			        function(){
+						$img2 = $(this).attr('src');
+						$this_similarity = similarity($img1, $img2);
+						echo $this_similarity;
+			        });
+				});
+				*/
+				 				  			
+			});	// end good images load 
+
+			// clicked enter button 
+			$('#enterbutton').click(function() {
+
+				// make sure there are items selected 
+				if ($('.keepthis').length === 0) { alert ('select items'); }
+
+				var y = 0;					
+				$.each($('.keepthis'),function() {
+					var currentId = $(this).attr('id');
+					var objectis = $('.searchobjects').val();
+					var object_id = objectis.split('-')[0];
+					var photo_url = $(this).attr("src");
+
+					if (object_id === 0) {
+						window.location.replace("objectadd.html");
+					}
+
+					if (object_id > 0 && $.isNumeric(object_id)) {
+						$.ajax({
+							type: 'POST',
+							data: {object_id:object_id, photo_url:photo_url},
+							url: '../php/speedtagedit.php',
+							success: function(data) {
+								y++;
+								$("#statusmessage").html(y + ' filed');
+								$('#'+currentId).addClass('done').removeClass('keepthis');
+								$('.done').hide();
+							}
+						}); 
+					} 
+
+				}); 
+
+			}); 
+
+			// delete image showing on speedtag page 
+			$('#deletebutton').click(function() {	
+
+				var x= 0;					
+				$.each($('.deletethis'),function() {
+
+					var currentId = $(this).attr('id');
+					var src = $(this).attr("src");
+					var photostring = src.substr(src.indexOf("SPT") + 8);
+					var photo_stamp = photostring.substr(0, photostring.lastIndexOf('-')); 
+
+					$.ajax({
+						type: 'POST',
+						data: {photo_stamp:photo_stamp},
+						url: '../php/speedtag_delete.php',
+						success: function(data) {
+							x++;
+							$("#statusmessage").html(x + ' deleted');
+							$('#'+currentId).addClass('done').removeClass('deletethis');
+							$('.done').hide();
+						}
+					}); 
+				}); 
+
+			}); 
+
+			$('#addobjectbutton').click(function() {	
+				window.location.replace("objectadd.html");
+			}); 
+  
+		});  // end document ready 
+
+	</script>
+
+</head> 
+ 
+<body>
+
+<div id="thewrapper">
+
+    <div id="includemenu"></div>
+    <div class="thecontent">
+    
+        <h1>thumb tag</h1>
+
+        <div class="allthumbs">
+        	<!-- location of thumbnails --> 
+        </div>
+
+        <div class="searchbox">
+	        <form action="">
+	            <input class="searchobjects" name="searchobjects" placeholder="search for the object">
+	        </form>
+
+	        <button type="button" id="enterbutton" class="btn">enter</button>
+	        <button type="button" id="deletebutton" class="btn">delete</button>
+	        <button type="button" id="addobjectbutton" class="btn">new object</button>
+
+	        <div id="statusmessage"></div>
+	         <div id="toggleall">all</div>
+
+        </div>
+       
+
+    </div><!-- end thecontent -->          
+</div><!-- wrapper -->       
+	
+</body> 
+</html> 

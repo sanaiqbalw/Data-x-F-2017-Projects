@@ -1,0 +1,127 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	 displays images for an object_id in dataTables 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>images</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/table.css" rel="stylesheet" type="text/css">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+		.keepthis {border: 3px solid #E1E1E1; cursor:pointer; float:left; height:50px; margin:3px; opacity:1.0; width:50px;}
+	    .deletethis {border:3px solid red; float:left; height:50px; margin:3px; opacity:0.6; width:50px; }
+	    .title {font-size: 16px; margin: 10px 0 0 0;}
+	    .thephotos {margin: 20px 0 0 0;}
+	    .topsection {height:50px;}
+	</style>
+
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+		
+	  $(document).ready(function() {
+
+	  		// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+		  
+		  // load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+			
+			// get the object_id using javascript
+			url = window.location.href;
+			name = 'object_id';
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+			object_id = decodeURIComponent(results[2].replace(/\+/g, " "));
+
+			$('#gobutton').hide();
+
+			// load the SPT photos 
+			$("#showimages").load( "../php/images_grid.php?object_id="+object_id, function( response, status, xhr ) {
+
+				// if load success and "congratulations you are caught up", then hide titles and button
+			
+				if ( status == "error" ) {
+					var msg = "Sorry but there was an error: ";
+					$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+				} else {
+
+					// clicking images changes class 
+					$(".keepthis").on('click', function() {
+						$('#gobutton').show();
+						$currentclass = $(this).attr("class");
+						if ($currentclass == 'keepthis') {
+							$(this).toggleClass('keepthis deletethis');
+						}
+						if ($currentclass == 'deletethis') {
+							$(this).toggleClass('deletethis keepthis');
+						}
+					 });
+				}
+
+			});	// end good images load 
+
+			// done with review, GO 
+			$("#gobutton").on('click', function() {
+
+				// photos with .deletethis class delete via speeddelete.php 
+				var y = 0;					
+				$.each($('.deletethis'),function() {
+					var currentId = $(this).attr('id');
+					$.ajax({
+						type: 'POST',
+						data: {photo_set:currentId},
+						url: '../php/images_griddelete.php',
+						success: function(data) {
+							y++;
+							$("#messages_delete").text(y + ' deleted');
+						}
+					}); 
+					$('#'+currentId).hide();
+				});
+			});
+
+		}); // end document ready
+	
+    </script>
+	
+</head> 
+ 
+<body> 
+
+<div id="thewrapper">
+
+    <div id="includemenu"></div>
+    
+    <div class="thecontent">
+	    <h1>images grid</h1>   
+
+	    <div class="topsection">
+		    <div id="message_delete"></div>
+		    <button type="button" id="gobutton" class="btn">delete</button>    
+	    </div>
+
+	    <div id="showimages">
+	    </div>  
+
+	        
+            
+	</div><!-- end thecontent -->
+</div><!-- wrapper -->
+     
+</body> 
+</html> 

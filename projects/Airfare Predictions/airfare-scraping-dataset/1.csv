@@ -1,0 +1,11 @@
+,Airline,Departure City,Arrival City,Date,Departure Time,Arrival Time,Price,Duration,Stops
+0,United,SFO,EWR,2018-04-01,5:45 PM,2:07 AM+1,240,5h 22m,Nonstop
+1,United,SFO,EWR,2018-04-01,8:40 PM,5:02 AM+1,240,5h 22m,Nonstop
+2,United,SFO,EWR,2018-04-01,10:35 PM,6:50 AM+1,240,5h 15m,Nonstop
+3,United,SFO,EWR,2018-04-01,11:55 PM,8:15 AM+1,240,5h 20m,Nonstop
+4,United,SFO,EWR,2018-04-01,3:00 PM,11:18 PM,265,5h 18m,Nonstop
+5,United,SFO,EWR,2018-04-01,8:10 AM,4:26 PM,307,5h 16m,Nonstop
+6,United,SFO,EWR,2018-04-01,1:30 PM,9:51 PM,427,5h 21m,Nonstop
+7,United,SFO,EWR,2018-04-01,2:30 PM,10:57 PM,427,5h 27m,Nonstop
+8,United,SFO,EWR,2018-04-01,9:00 AM,5:30 PM,554,5h 30m,Nonstop
+9,United,SFO,EWR,2018-04-01,12:30 PM,8:47 PM,554,5h 17m,Nonstop

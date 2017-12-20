@@ -1,0 +1,60 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	check system for errors  
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>db schema</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+		$(document).ready(function() {
+			// load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+
+            $(".bucketsused").load('../php/systemBucketsused.php');
+            $(".countobjects").load('../php/systemCountobjects.php');
+            $(".bucketsize").load('../php/systemBucketsize.php');
+
+		});
+    </script> 
+
+</head>  
+ 
+<body> 
+
+<div id="thewrapper">
+            
+    <div id="includemenu"></div>
+    
+    <div class="thecontent">
+
+    <h1>error checks</h1>
+
+    <p>Name of buckets used in S3:</p>
+    <div class="bucketsused"></div>
+
+    <p>Verifying number of images:</p>
+    <div class="countobjects"></div>
+
+    <p>verify size of S3 bucket</p>
+    <div class="bucketsize"></div>
+
+    <p><a href="https://console.aws.amazon.com/trustedadvisor/home?#/dashboard" target="_blank">Amazon Trusted Advisor Dashboard</a></p>
+
+
+    
+    </div><!-- end thecontent -->
+</div><!-- wrapper -->
+     
+ 
+</body> 
+</html> 

@@ -1,0 +1,156 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+	<!--
+        add a photo to an S3 object_id 
+    -->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>upload image</title>	
+    
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+		#status_message {margin-top:20px;}
+		.thumb-image {width:256px;}
+		#image_holder{margin-top:20px;}
+		#objectdetail {font-size:16px;}
+	</style>
+
+	<script src="../js/jquery-3.1.1.min.js"></script>
+
+    <script>
+	
+	   $(document).ready(function() {
+
+	   		// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+		
+			// load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+			
+			// if an object_id is pre-selected, show it as the selected dropdown 
+			url = window.location.href;
+			name = 'object_id';
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+			object_id = decodeURIComponent(results[2].replace(/\+/g, " "));
+			
+			// add the object_id value to the hidden form field
+			$("#object_id").val(object_id);
+			$("#uploadone").hide();
+			
+			// get the object detail
+			$.ajax({
+				type: "POST",
+				url: "../php/getObjectdetail.php",
+				data: {object_id:object_id},
+				success: function(data) {
+					// remove html entities and add to title 
+					var objectdetail = $("<div/>").html(data).text();
+					$('#objectdetail').html(objectdetail);
+				}
+			});
+			
+			// function to display the selected image
+			$("#fileUpload").on('change', function () {
+				
+				$("#uploadone").show();
+				var image_holder = $("#image_holder");
+				image_holder.empty();
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$("<img />", {
+						"src": e.target.result,
+						"class": "thumb-image"
+					}).appendTo(image_holder);
+				};
+				image_holder.show();
+				reader.readAsDataURL($(this)[0].files[0]);
+			});
+						 
+			// add a photo to the object 
+			$('#uploadone').click(function() {	
+			
+				if(document.getElementById("fileUpload").value === "") {
+					$('#status_message').text('no file selected');	
+				} else {
+					// give variable formData the data for processing 
+					$('#status_message').text('uploading image');
+					var form = $('form')[0]; 
+					var formData = new FormData(form);
+					
+					$.ajax({
+						url: "../php/upload_photo.php",
+						type: "POST",
+						data: formData, 
+						contentType: false,
+						processData: false,
+						success : function(data){
+							var result = $.trim(data);
+							$('#status_message').text('success!');
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							$('#status_message').text(xhr.responseText);
+							console.log(xhr.statusText);
+							console.log(textStatus);
+							console.log(error);
+						}
+					});
+				
+				}
+				
+			}); // end uploadone button 
+		 
+		});
+    </script> 
+
+</head> 
+
+<body>
+
+<div id="thewrapper">
+	<div id="includemenu"></div>
+    
+    <div class="thecontent">
+    
+		<h2>add single photo to object</h2>
+
+	    <div id="objectdetail"></div>
+    
+        <div class="box">
+        
+            <form  class="boxform" id="uploadimage" enctype="multipart/form-data" method="post" action="">
+                <fieldset> 
+                
+                <input type="hidden" id="object_id" name="object_id" value="">
+                        
+                <input id="fileUpload" type="file" name="image" /><br>
+                
+                <div id="image_holder"></div>
+                
+                <button type="button" id="uploadone" class="btn">upload image</button>
+                
+                </fieldset>
+            </form>
+            
+        </div>
+
+        <div id="status_message"> </div>  
+
+    </div><!-- /thecontent -->
+        
+</div>
+
+</body>
+</html>

@@ -1,0 +1,654 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+      <style>
+         table {
+         border-collapse: collapse;
+         border: 2px red solid;
+         font: 12px sans-serif;
+         }
+          thead {
+  background: #70396e;
+  color: #fff;
+}
+tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+          
+         td {
+             
+         border: 1px black solid;
+         padding: 5px;
+         }
+          iframe {
+              position: relative;
+    vertical-align:top;
+    margin: 0 auto;
+    display: block;
+    border: 0px solid #ccc;
+}
+          
+          .centered {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+                   text-shadow: 2px 2px 0px #FF0000; /* FF3.5+, Opera 9+, Saf1+, Chrome, IE10 */
+
+}
+      </style>
+
+<title>Match N Merge</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://github.com/extrabacon/python-shell/blob/master/index.js"></script>
+<script type="text/javascript">
+    var filesToRead = "";
+    var columnsDropDown = "";
+    var enableAll = 1;
+    var displayAll = 0;
+    var joinColumnsButton = "";
+    var displayColumnButton = "";
+    var filename = "";
+    var filename2 = "";
+    var testButton = "";
+    var joinRowsButton = "";
+    var divInstructions = "";
+    var div1Instructions = "";
+    var div2Instructions = "";
+    var div3Instructions = "";
+    var div4Instructions = "";
+    var h1 = "";
+    var h2 = "";
+    var h3 = "";
+    var h4 = "";
+    var yellow = '#e0e034';
+    var white = '#ADD8E6';
+    var dataset1 = "";
+    $(document).ready(function(){
+        $('input[type="file"]').change(function(e){
+            var fileName = e.target.files[0].name;
+            display(fileName);
+            readDSFile(e.target.files[0], fileName);
+         });    
+    });
+    
+    //This function initiates the join row background modeling process
+    function joinRows()
+    {
+        serializeColumnChangesCommit();
+        joinRowsButton.disabled = true;
+        div4Instructions.innerHTML = "Modeling to match n merge rows ...";
+        
+        var x = 0;
+        display("Starting joinRows process ...");
+        var intervalIDAnotherRows = setInterval(function () {
+    
+        if (fileExists('results.csv')) {
+            display("results file exists");
+            window.clearInterval(intervalIDAnotherRows);
+            div4Instructions.innerHTML = "Match n Merge Row Join Completed";
+            showResults();
+       }
+        }, 15000);
+
+    }
+    
+    //This function initializes all pertinent variables
+    function init()
+    {
+        display("Initializing ...");
+        preReqs = document.getElementById('preReqs');
+        preReqs.innerHTML = "Note:  This must be run in firefox with the default download file path set to: " + document.URL.substring(document.URL.indexOf("/"), document.URL.lastIndexOf("/")) + ".  Additionally, this file must be executed from Jupyter Notebook, MatchNMerge.ipynb";
+        
+        displayAll = getParameterByName("displayAll", window.location.href);
+        enableAll = getParameterByName("enableAll", window.location.href);
+        
+        joinColumnsButton = document.getElementById('joinColumnsButton');
+        displayColumnButton = document.getElementById('displayColumnButton');
+        filename = document.getElementById('filename');
+        filename2 = document.getElementById('filename2');
+        testButton = document.getElementById('testButton');
+        joinRowsButton = document.getElementById('joinRowsButton');
+              
+        h1 = document.getElementById('h1');
+        h2 = document.getElementById('h2');
+        h3 = document.getElementById('h3');
+        h4 = document.getElementById('h4');
+        
+        h1.style.backgroundColor = yellow;
+         
+        divInstructions = document.getElementById('divInstructions');
+        div1Instructions = document.getElementById('div1Instructions');
+        div2Instructions = document.getElementById('div2Instructions');
+        div3Instructions = document.getElementById('div3Instructions');
+        div4Instructions = document.getElementById('div4Instructions');
+             
+        divInstructions.innerHTML = "Step 1: Load data set csv files ";
+        if (!enableAll)
+        {
+            joinColumnsButton.disabled = true;
+            displayColumnButton.disabled = true;
+            joinRowsButton.disabled = true;
+            testButton.disabled = true;           
+         }
+     }
+   
+     //This function modifies the UI after the user column mapping changes 
+     function serializeColumnChanges()
+     {
+         testButton.disabled = true;
+         divInstructions.innerHTML += " / Step 4: Click on 'Match N Merge Rows' to match n merge rows";
+         div3Instructions.innerHTML = "Column Mappings Finalized";
+         joinRowsButton.disabled = false;
+         h3.style.backgroundColor =  white; //#ADD8E6;
+         h4.style.backgroundColor = yellow;
+      }
+    
+      //This function serializes user column mappings to a flat file 
+      function serializeColumnChangesCommit()
+      {
+          display("serializecolumnchanges commit function ...");
+          var csv = [];
+          var rows = document.querySelectorAll("table tr:not([align])")
+          for (var i = 0; i < rows.length; i++) {
+              var row = [], cols = rows[i].querySelectorAll("td, th");
+              for (var j = 0; j < cols.length; j++)
+              {
+                  if (cols[j].innerText.startsWith("Keep Match"))
+                  {
+                    var k = rows[i].querySelector('option:checked');
+                    row.push(k.innerText + ",");
+                  }
+                  else
+                  {
+                     row.push(cols[j].innerText);
+                  }
+              }    
+
+          csv.push(row.join(","));
+        }
+
+         // Download CSV
+        display("columnmapping content: " + csv.join("\n"));
+        download("columnMapping_user.csv", csv.join("\n"));
+      }
+    
+      //This function reads the querystring
+      function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+     }
+     
+     //This function checks for the existance of a file
+     function checkForExistance()
+     {
+        var request;
+        if(window.XMLHttpRequest)
+            request = new XMLHttpRequest();
+        else
+            request = new ActiveXObject("Microsoft.XMLHTTP");
+            request.open('GET', 'http://www.mozilla.org', false);
+            request.send(); // there will be a 'pause' here until the response to come.
+            // the object request will be actually modified
+        if (request.status === 404) {
+            alert("The page you are trying to reach is not available.");
+        }
+     }
+    
+     //This function reads the raw text file
+     //param: file = file to read
+     function readTextFile(file)
+     {
+        var rawFile = new XMLHttpRequest();
+        var allText = "";
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function ()
+        {
+            if(rawFile.readyState === 4)
+            {
+                if(rawFile.status === 200 || rawFile.status == 0)
+                {
+                    allText = rawFile.responseText;
+                }
+            }
+        }
+        rawFile.send(null);
+        return allText;
+    }
+   
+    //This function generates the HTML table that will be used as a UI for the user to change column mappings
+    function generateColumnTable()
+    {
+        displayColumnButton.disabled = true;
+        div3Instructions.innerHTML = "Joined Columns below.  Please review";
+        testButton.disabled = false;
+            
+        var d1 = document.getElementById('divColumn');
+        display("in generate column table function ...");
+        data = readTextFile("columnMapping.csv"); 
+        display("contents of columnMapping: " + data);
+         
+        var lines = data.split("\n"),
+        output = [],
+        i;
+        for (i = 0; i < lines.length; i++)
+        {
+            display("looping through columnMapping..." + columnsDropDown);
+            var correctSelectColumn = "";
+            if (i == 0 || i == lines.length - 1)
+            {
+                if (i == 0)
+                    correctSelectColumn = "<td>" + "Change Column Mapping" + "</td>";
+                else
+                    correctSelectColumn = "";
+            }
+            else
+            {
+                correctSelectColumn = columnsDropDown;
+                display("the select column " + columnsDropDown);
+            }
+             
+            colorString = "style=&quot;background-color:#FFEFDB&quot;";
+            if (i == 0)
+            {
+                colorString = "style=&quot;background-color:#f5deb3&quot;";
+            }
+           
+            output.push("<tr" + colorString + "><td>"
+             + lines[i].slice(0,-1).split(",").join("</td><td>")
+             + correctSelectColumn
+             + "</td>" 
+       
+                 
+                     
+                     
+             + "</tr>");
+         }
+             output = "<table id=&quot;mytable&quot;>" + output.join("") + "</table>";
+             var div = document.getElementById('container');
+             var extra = "<div>Review joined columns and modify appropriately.  When completed, finalize column mappings by clicking on the 'Finalize Column Mappings' button above.</div>";
+             d1.innerHTML = extra;
+             d1.insertAdjacentHTML('afterend', output);
+    }
+    
+    //This function checks for the existance of a file
+    //param: fileName - file to be checked
+    function fileExists(fileName)
+    {
+        display("check for file existence " + fileName);
+        var request;
+        if(window.XMLHttpRequest)
+            request = new XMLHttpRequest();
+        else
+            request = new ActiveXObject("Microsoft.XMLHTTP");
+        
+        
+            request.open('GET', fileName, false);
+            request.send(); // there will be a 'pause' here until the response to come.
+            // the object request will be actually modified
+            if (request.status === 404) {
+                display(fileName + "file does not exists");
+                return false;
+        }
+        else
+        {
+            display(fileName + "file exists ...");
+            return true;
+        }
+    }
+    
+    //This function shows and exposes the final result, results.csv
+    function showResults()
+    {
+        display("In show results function ...");
+        document.getElementById('h4').style.visibility = 'visible';
+        document.getElementById("downloadLink").style = "display: visible;"
+       
+        //document.getElementById('myiframeResults').src = document.getElementById('myiframeResults').src;
+        //var iframe2 = document.getElementById('myiframeResults');
+        //iframe2.style.display = "block";
+    }
+
+    //This function show the contents of status.txt (modeling output function)
+    function showStatus() {
+        
+       var x = 0;
+       display("In showStatus function...");
+       var intervalID = setInterval(function () {
+       if (fileExists('status.txt'))
+       {
+           display(" status file exists ...");
+           var iframe = document.getElementById('myiframe');
+           iframe.style.display = "block";
+           //reload
+           document.getElementById('myiframe').src = document.getElementById('myiframe').src;
+       }
+       else
+           display("no status file yet ...");
+      
+        }, 7000);
+  
+    }
+    
+    //This function initiates the join column modeling function in the background
+    function joinColumns() { 
+        joinColumnsButton.disabled = true;
+        div2Instructions.innerHTML = "Modeling to match n merge columns ...";
+        showStatus();
+        download("filesReady.txt", filesToRead);
+        
+        var x = 0;
+        var intervalIDAnother = setInterval(function () {
+    
+        if (fileExists('columnMapping.csv')) {
+           display("column mapping file exists");
+           window.clearInterval(intervalIDAnother);
+           
+           div2Instructions.innerHTML = "Match n Merge Column Join Completed";
+           divInstructions.innerHTML += " / Step 3:  Review Column Joining";
+           displayColumnButton.disabled = false;
+           h2.style.backgroundColor = white;
+           h3.style.backgroundColor = yellow;
+            
+          }
+        }, 15000);
+  
+     }
+    
+     //This function is a helper display function
+     function display(msg) {
+        if (displayAll)
+        {
+            var p = document.createElement('p');
+            var date = new Date();
+            var utcDate = new Date(date.toUTCString());
+            utcDate.setHours(utcDate.getHours()-12);
+            var usDate = new Date(utcDate);
+       
+            p.innerHTML =  usDate + " : " + msg;
+            document.body.appendChild(p);
+        }
+    }
+    
+    //This function validates that a csv file in being uploaded
+    function Validate(fileName) {
+       display("In csv validation function ...");  
+       if (fileName.endsWith('.csv') || fileName.endsWith('.txt'))
+       {
+           return true;
+       }
+       else
+          return false;
+    }
+    
+    var saveData = (function () {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    return function (data, fileName) {
+        var json = JSON.stringify(data),
+            blob = new Blob([json], {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    };
+}());
+
+    //This function adds the column in the UI to allow user to change the column mapping
+    function processColumnNames(fileName)
+    {
+         display("In processColumnName function ...");
+         data = readTextFile(fileName); 
+            
+         var lines = data.split("\n");
+                 
+         var columns = lines[0].slice(0,-1).split(",");
+         display(columns);
+        
+        var selectColumn =  "<td><select name=&quot;cars&quot id=&quot;cars&quot onchange=&quot;showfield(this.options[this.selectedIndex].value)&quot;;><option value=&quot;keepvalue&quot;>Keep Match</option><option value=&quot;donotmatch&quot;>Do Not Match</option>";
+        
+    
+        for(var i = 0; i < columns.length; i++) 
+        {
+           // Trim the excess whitespace.
+           columns[i] = columns[i].replace(/^\s*/, "").replace(/\s*$/, "");
+           if (columns[i] == "")
+               continue;
+            
+           selectColumn = selectColumn + "<option value=&quot;" + columns[i] + "&quot;>" + columns[i] + "</option>";
+
+        }
+  
+        
+        var selectColumn =  selectColumn + "</select><div id=&quot;div1&quot;></div></td>";
+        columnsDropDown = selectColumn;
+        display(selectColumn);
+                
+    }
+    
+    //This function reads in the selected data sets
+    function readDSFile(passedFile, fileName) {
+   // var file = input.files && input.files[0];
+        var file = passedFile;
+        display("in readDSFile");
+            
+        var textType = /text.*/;
+    
+        if (Validate(fileName)) {
+            display("file validated ...");
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+            download(fileName, reader.result);
+            }
+
+            reader.readAsText(file);    
+            } else {
+                display("File extension not supported!");
+            }
+             
+             //process fileToRead
+             if (filesToRead == "")
+             {
+                 filesToRead = fileName + ",";
+                 div1Instructions.innerHTML = "File 1 Loaded";
+                 //process filenames on dataset1
+                 dataset1 = fileName;
+                 processColumnNames(dataset1);
+                 
+             }
+             else if (filesToRead.endsWith(','))
+             {
+                 if (columnsDropDown == "")
+                     processColumnNames(dataset1);
+                 
+                 filesToRead = filesToRead + fileName;
+                 //write out to columns
+                 //process filenames on dataset1
+                 //processColumnNames(fileName);
+                 div1Instructions.innerHTML += " / File 2 Loaded";
+                 divInstructions.innerHTML += " / Step 2:  Click on 'Match N Merge Columns' to match n merge match n merge columns";
+                 h1.style.backgroundColor = white;
+                 filename.disabled = true;
+                 filename2.disabled = true;
+                 joinColumnsButton.disabled = false;
+                 h2.style.backgroundColor = yellow;
+             }
+         }
+    
+    //This function is a helper download function
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute(
+    'href',
+    'data:application/download;charset=utf-8,' + encodeURIComponent(text)
+      );
+      pom.setAttribute('download', filename);
+
+      if (document.createEvent) {
+        var event = document.createEvent('MouseEvents');
+        event.initEvent('click', true, true);
+        pom.dispatchEvent(event);
+      }
+      else {
+        pom.click();
+      }
+    }
+    
+    //This function is a helper download function
+    function download2(filename, text) {
+        display("downloading ... " + filename);
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+    
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        }
+        else {
+            pom.click();
+    }
+    
+    //This function read the data set file as a text only
+    //param:  passedFile - file to be read
+    //param: filename - file name
+    function readDSFileAsTextOnly(passedFile, fileName) {
+        var file = passedFile;
+        var textType = /text.*/;
+
+        if (file.type.match(textType)) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                download(fileName, reader.result);
+            }
+
+            reader.readAsText(file);    
+            } else {
+                display("File not supported!");
+            }
+             //process fileToRead
+            if (filesToRead == "")
+            {
+                filesToRead = fileName + ",";
+            }
+            else if (filesToRead.endsWith(','))
+            {
+                filesToRead = filesToRead + fileName;
+            }
+     }
+    
+     //This function is a helper to read URLs   
+     function httpGet(theUrl)
+     {
+        if (window.XMLHttpRequest)
+        {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else
+        {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange=function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            return xmlhttp.responseText;
+        }
+    }
+    xmlhttp.open("GET", theUrl, false );
+    xmlhttp.send();    
+}
+}
+
+</script>
+</head>
+<body style="background-color:#D3D3D3;" onload="init()">
+
+    <div class="container">
+  <img src="background2.jpg" alt="Norway" style="width:100%;">
+  <div class="centered"><h1 style="font-size:700%;color: #FFFFFF; text-align: center;"><em><span style="color: #FFFFFF;">M n M</span>
+      </em>
+      <div style="font-size:25%;color: #FFFFFF; text-align: center;"><em><span style="color: #FFFFFF;">Match 'n Merge</span>
+          </div>
+    </div>
+      <p id="preReqs"></p>
+</div>
+  
+    <strong><div id="divInstructions"></div></strong>
+    </p>
+    <table style="background-color:#ADD8E6;" width="100%" border="1">
+<tbody>
+<tr align="left"> <!-- needed to be filtered out -->
+<td width="25%"><h2 id="h1" style="color: #2e6c80; text-align: left;"><span style="color: #333399;"><em>Step 1:  Select Data CSV Sets</em></span></h2>
+    <h3>Select the first CSV Data Set:</h3>
+    <input type='file' id='filename' name='filename'>
+   
+    <h3>Select the second CSV Data Set:</h3>
+    
+<input type='file' id='filename2' name='filename2'>
+        </p><div id="div1Instructions"></div>
+</td>
+<td  width="25%" style="text-align:left;vertical-align:top;padding:0"><h2 id="h2" style="color: #2e6c80; text-align: left;"><span style="color: #333399;"><em>Step 2:  Match N Merge Columns</em></span></h2>
+    <h3>Model to Match N Merge Columns:</h3>
+    
+<button id="joinColumnsButton" onclick="joinColumns()">Match N Merge Columns</button>
+        </p>
+<div id="div2Instructions"></div>
+       
+</td>
+
+    <td  width="25%" style="text-align:left;vertical-align:top;padding:0"><h2 id="h3"  style="color: #2e6c80; text-align: left;"><span style="color: #333399;"><em>Step 3:  Review Mappings</em></span></h2>
+           <h3>Review Column Mappings:</h3>
+        <button id="displayColumnButton" onclick="generateColumnTable()">Display Column Mappings</button>
+    
+            <button id="testButton" onclick="serializeColumnChanges()">Finalize Column Mappings</button>
+
+    </p><div id="div3Instructions"></div>
+
+    
+ 
+</td>
+
+<td  width="25%" style="text-align:left;vertical-align:top;padding:0"><h2 id="h4" style="color: #2e6c80; text-align: left;"><span style="color: #333399;"><em>Step 4:  Match N Merge Rows</em></span></h2>
+    <h3>Model to Match N Merge Rows:</h3>
+    
+<button id="joinRowsButton" onclick="joinRows()">Match N Merge Rows</button>
+ </p><div id="div4Instructions"></div>
+</td>
+</tr>
+<tr align="center">
+<td colspan="1">
+<iframe align="top" width="500" height="400" id="myiframe" src="status.txt"  style="display: none;" frameborder="0"></iframe>
+    </td>
+    <td colspan="2">
+           <div id="divColumn">
+           <!--      <a style="display: none;" id="downloadLink" href="columnJoinerLog.txt">Download results.csv file</a> -->
+           </div>
+    </td>
+    <td colspan="1">
+    
+<p id="finalResults"></p>
+    <a style="display: none;" id="downloadLink" href="results.csv">Download results.csv file</a> 
+ 
+        <iframe align="top" id="myiframeResults" src="results.txt"  style="display: none;" frameborder="0"></iframe>
+
+        </td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
+
+

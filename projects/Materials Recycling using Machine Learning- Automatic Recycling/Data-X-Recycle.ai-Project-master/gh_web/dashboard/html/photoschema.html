@@ -1,0 +1,63 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+	<!--
+    	display part-number system used for training images 
+    --> 
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>part number</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+	   $(document).ready(function() {
+		  // load the left menu bar  
+		 $("#includemenu").load("../ssi/topmenu.ssi"); 
+
+            // check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+
+		});
+    </script> 
+    
+</head> 
+ 
+<body> 
+
+<div id="thewrapper">
+
+    <div id="includemenu"></div>
+                   
+    <div class="thecontent">
+
+        <div class="titleleft">         
+        	<h1>photo_id</h1>      
+        </div>
+
+        <div style="float:left; clear:left;">  
+            
+            <p>edit <a href="https://docs.google.com/presentation/d/12diRw8fCPDq8EY9HXT2bpMnBJNMxEDnFEhxChltFk-c/edit#slide=id.p">here</a></p>
+            
+            <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRbP7IxAVd_BfbfzgZVE2Fyl3ejGP0KUpANtUE4UKisTSX97eaj_2LVA9szSlJAt2aB7VnF1p_TLwp0/embed?start=true&loop=false&delayms=3000" frameborder="0" width="720" height="427" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+        
+        </div>
+
+    </div> <!-- end thecontent -->
+
+</div> <!-- end thewrapper -->
+
+</body> 
+</html> 

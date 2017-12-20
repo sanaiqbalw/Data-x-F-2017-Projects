@@ -1,0 +1,111 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+    
+    <!--
+        upload images to S3 placed in directory s3store folder 
+    -->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>image add</title>	
+    
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+		#objectinfo {font-size:16px; margin:20px 0 10px 50px;}
+		#message {clear:left; float:left; font-size:14px; margin:20px 0 0 50px; }
+		#enterbutton {clear:left; float:left;}
+		#fileform {margin-top:50px;}
+	</style>
+   
+	<script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+	   $(document).ready(function() {
+
+	   		// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+
+		  // load the left menu bar  
+		 $("#includemenu").load("../ssi/topmenu.ssi"); 
+		 
+		// if an object_id is pre-selected, show it as the selected dropdown 
+		url = window.location.href;
+		name = 'object_id';
+		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		results = regex.exec(url);
+		object_id = decodeURIComponent(results[2].replace(/\+/g, " "));
+		
+		// get the description of the object 
+		$.ajax({
+			type: 'POST',
+			url: '../php/getObjDesc.php',
+			data: {object_id: object_id},
+			success: function (data) {
+				// decode html entities 
+				var objecttemp = $("<div/>").html(data).text();				
+				$('#objectinfo').text(objecttemp);
+			}
+		});
+		
+		// uploadbutton clicked
+		var i = 0;
+		$('#enterbutton').click(function() {
+			$('#message').text(' ...uploading images');
+			$.ajax({
+				type: 'POST',
+				url: '../php/upload_multiple.php',
+				data: {object_id:object_id},
+				success: function (data) {
+					$('#message').text(i +' images uploaded to S3');
+					i++;
+				}
+			});
+		}); 
+		
+	});
+    </script> 
+
+</head> 
+
+<body>
+
+
+
+<div id="thewrapper">
+
+	<div id="includemenu"></div>
+
+    <div class="thecontent">
+	<h2>upload to s3 via s3store folder</h2>
+    
+        <div class="box">
+        
+            <form class="boxform" enctype="multipart/form-data" method="post" action="">
+            <fieldset>
+        
+                <div id="objectinfo"></div>
+                
+                <button type="button" id="enterbutton" class="btn">upload</button>
+                <div id="message">photos in the s3store folder will be uploaded</div>
+                
+            </fieldset>  
+            </form>
+            
+           
+        </div><!-- /fileform -->
+    </div>
+
+</div>
+
+</body>
+</html>

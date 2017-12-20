@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+
+<!--
+	 object edit form  
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>object edit</title>	
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+		#objectEdit {float:left;}
+		#objectactions {float:left; text-align:left; width:200px; }
+		.btn {clear:left; float:left; margin-top:15px;}
+		#repimage {clear:left; float:left; height:150px;margin:20px; }
+		#therepimage{height:200px; width:200px;}
+
+		#bin{width:370px;}
+		#material{width:370px;}
+		#object_type{width:370px;}
+
+		.btnplus { background-color:#C0C0C0; border:0; border-radius:5px; color:#ffffff;  cursor:pointer; float:right; font-size:20px; margin-top:-50px;  padding:7px; text-decoration:none; }
+		button:focus {outline:0 !important; }
+		.btnplus:hover { background-color:#8FD811;text-decoration:none; }
+
+		.btnedit { background-color:#C0C0C0; border:0; border-radius:15px; color:#ffffff; cursor:pointer; font-family:Arial; font-size:16px; margin:10px 0 0 20px; padding:5px 20px 5px 20px; text-decoration:none; width:160px;}
+		button:focus {outline:0 !important; }
+		.btnedit:hover { background-color:#71E2B9;text-decoration:none; }
+
+	</style>
+
+	<script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+
+    	// function to get pulldown values 
+    	function addPulldown() {
+
+	           // get bin pulldown
+	            $.ajax({                                      
+	                url: '../php/pulldownBin.php',
+	                success: function(data) {
+	                    $('#bin').append(data);
+	                }
+	            });  
+
+	            // get material pulldown
+	            $.ajax({                                      
+	                url: '../php/pulldownMaterial.php',
+	                success: function(data) {
+	                    $('#material').append(data);
+	                }
+	            });  
+
+	            // get object_type pulldown
+	            $.ajax({                                      
+	                url: '../php/pulldownObjecttype.php',
+	                success: function(data) {
+	                    $('#object_type').append(data);
+	                }
+	            }); 
+
+        }
+		
+	   $(document).ready(function() {
+
+	   		// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+		  
+			// load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+
+		  	// get the object_id using javascript
+			url = window.location.href;
+			name = 'object_id';
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+			object_id = decodeURIComponent(results[2].replace(/\+/g, " "));
+
+
+			// load the sample image 
+			// see if image exists in s3store, if not get one from S3
+
+			$('#repimage').attr('src', '../s3store/images/'+object_id+'.jpg');
+
+			// make sure there is an image there
+			var image = new Image(); 
+			image.src = '../s3store/images/'+object_id+'.jpg';
+			if (image.width === 0) {
+				// no image, so let's get one 
+				$.ajax({
+					 url: '../php/getSamplephoto.php', 
+					 type: "POST",
+					 data: ({object_id:object_id}),
+					 success: function(data){
+					 	$('#repimage').attr('src', '../s3store/images/'+object_id+'.jpg');
+					 }
+				});  
+			}
+
+			$('.bininput').hide();
+            $("#addbin").on('click', function() {
+                $('.bininput').show();
+                $('.binselect').hide();
+            });
+
+            $('.materialinput').hide();
+            $("#addmaterial").on('click', function() {
+                $('.materialinput').show();
+                $('.materialselect').hide();
+            });
+
+            $('.object_typeinput').hide();
+            $("#addobject_type").on('click', function() {
+                $('.object_typeinput').show();
+                $('.object_typeselect').hide();
+            });
+			
+			// populate the table with existing values
+			$.ajax({                                      
+				url: '../php/objectget.php', 
+				type: "GET",
+				data: {object_id : object_id},
+				dataType: 'json',  
+				success: function(data, textStatus, xhr) {
+					data = JSON.parse(xhr.responseText);
+					$('#object_id').val(data[0].object_id);
+					
+					// hack fix for html entities
+
+					var bintemp = $("<div/>").html(data[0].bin).text();
+					$('#bin').append('<option value="'+bintemp+'">'+bintemp+'</option>');
+
+					var materialtemp = $("<div/>").html(data[0].material).text();
+					$('#material').append('<option value="'+materialtemp+'">'+materialtemp+'</option>');
+
+					var object_typetemp = $("<div/>").html(data[0].object_type).text();
+					$('#object_type').append('<option value="'+object_typetemp+'">'+object_typetemp+'</option>');
+
+					var level1temp = $("<div/>").html(data[0].level1).text();
+					$('#level1').val(level1temp);
+					
+					var level2temp = $("<div/>").html(data[0].level2).text();
+					$('#level2').val(level2temp);
+					
+					var level3temp = $("<div/>").html(data[0].level3).text();
+					$('#level3').val(level3temp);
+					
+					var level4temp = $("<div/>").html(data[0].level4).text();
+					$('#level4').val(level4temp);
+
+					$('#sku').val(data[0].sku);
+																				
+					// title the object_id 
+					$("#idvalue").text(' '+data[0].object_id);
+
+					// get pulldown values 
+					addPulldown();
+
+				} 
+			});  // end ajax 
+
+
+			// submit the form 
+			$('#enterbutton').click(function() {	
+				$.ajax({
+					type: 'post',
+					url: '../php/objectedit.php',
+					data: $('#objectEdit').serialize(),
+					success: function () {
+						// alert(data);
+						window.location.replace("object.html");
+					}
+				});
+			}); 
+			
+			// add a photo to the object 
+			$('#uploadone').click(function() {	
+				window.location.replace("objectadd_photo.html?object_id="+object_id);
+			}); 
+			
+			// view images  
+			$('#viewimages').click(function() {		
+				window.location.replace("images.html?object_id="+object_id);
+			}); 
+
+			// images grid  
+			$('#images_grid').click(function() {		
+				window.location.replace("images_grid.html?object_id="+object_id);
+			}); 
+			
+			// upload json
+			$('#uploadjson').click(function() {		
+				window.location.replace("json_engine.html?object_id="+object_id);
+			}); 
+			
+			// deletebutton
+			$('#deletebig').click(function() {
+				if (confirm("WARNING WILL ROBINSON!!! Deletes BOTH object table, and all photos on S3")) {
+					$.ajax({
+						type: 'POST',
+						url: '../php/objectdelete.php',
+						data: {object_id: object_id },
+						success: function () {
+							window.location.replace("object.html");
+						}
+					}); // end ajax post 
+				}
+			});  // end deletebutton
+						
+		}); // end ready 
+		
+    </script> 
+
+</head> 
+ 
+<body>
+
+<div id="thewrapper">
+
+	<div id="includemenu"></div>
+               
+    <div class="thecontent">
+    
+        <div class="titleleft">         
+            <h1>edit the object<span id="idvalue"></span></h1>      
+        </div>
+       
+        <div class="box">
+                
+	            <form id="objectEdit" class="boxform" method="POST" action="">
+	            <fieldset>
+	            
+	            <input type="hidden" id="object_id" name="object_id">
+
+	            <div class="binselect">
+	                <label for="bin"><span>bin</span>
+	                    <select id="bin" name="bin">
+	                    </select>
+	                </label>  
+	                <button type="button" id="addbin" class="btnplus">+</button>
+	            </div> 
+
+	            <div class="bininput">
+	                <label for="bininput"><span>bin</span>
+	                    <input type="text" id="bininput" name="bininput"> 
+	                </label> 
+	            </div>
+
+	            <div class="materialselect">
+	                <label for="material"><span>material</span>
+	                    <select id="material" name="material">
+	                    </select>
+	                </label> 
+	                <button type="button" id="addmaterial" class="btnplus">+</button>
+	            </div>
+
+	            <div class="materialinput">
+	                <label for="materialinput"><span>material</span>
+	                    <input type="text" id="materialinput" name="materialinput"> 
+	                </label> 
+	            </div>
+
+	            <div class="object_typeselect">
+	                <label for="object_type"><span>object_type</span>
+	                    <select id="object_type" name="object_type">
+	                    </select>
+	                </label> 
+	                <button type="button" id="addobject_type" class="btnplus">+</button>
+	            </div>
+
+	            <div class="object_typeinput">
+	                <label for="object_typeinput"><span>object_type</span>
+	                    <input type="text" id="object_typeinput" name="object_typeinput"> 
+	                </label> 
+	            </div>
+
+	            <label for="level1"><span>level1</span>
+	                <input type="text" id="level1" name="level1"> 
+	            </label> 
+	    
+	            <label for="level2"><span>level2</span>
+	                <input type="text" id="level2" name="level2"> 
+	            </label>  
+	            
+	            <label for="level3"><span>level3</span>
+	                <input type="text" id="level3" name="level3">
+	            </label> 
+	            
+	            <label for="level4"><span>level4</span>
+	                <input type="text" id="level4" name="level4"> 
+	            </label> 
+	            
+	            <label for="sku"><span>sku</span>
+	                <input type="text" id="sku" name="sku">
+	            </label> 
+	            
+	            <button type="button" id="enterbutton" class="btn">enter</button>
+	    
+	            </fieldset>
+	            </form>
+
+			<div id="objectactions">
+	        	<div id="therepimage"><img id="repimage" src="../images/blank256.png" alt="blank image" /></div>
+	            <button type="button" id="uploadone" class="btnedit">upload one</button>
+	            <button type="button" id="uploadjson" class="btnedit">upload json</button>
+	            <button type="button" id="viewimages" class="btnedit">images table</button>
+	            <button type="button" id="images_grid" class="btnedit">images grid</button>
+	            <button type="button" id="deletebig" class="btnedit">delete object</button>
+        	</div>
+
+        
+		</div>  
+        
+        
+	</div>
+</div> 
+                
+</body> 
+</html> 

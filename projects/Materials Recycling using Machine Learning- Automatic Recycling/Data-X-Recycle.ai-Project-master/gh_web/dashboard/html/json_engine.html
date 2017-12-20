@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!--
+	upload images to S3 from json_string.json file 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+	<title>json engine</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+    
+    <style type="text/css">
+    	.box {clear:left; float:left;}
+		.codered {background-color:#FCF;}
+		.codegreen {background-color:#9FC;}
+		#objectselect {clear:left; float:left; margin-left:40px; width:600px}
+		.topmessage {clear:left; float:left; font-size:16px; margin:50px 0 5px 0;}
+		#enterbutton.btn {clear:left; float:left; margin: 30px 0 0 0;}
+		.previewimages {clear:left; float:left;}
+	</style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		
+	<script type = "text/javascript">
+	 $(document).ready(function() {
+
+ 		// check login session
+        $.ajax({                                      
+            url: '../php/session.php',
+            success: function(data) {
+                if (data != "login") {
+                    window.location.assign("login.html");
+                } 
+            }
+        });  
+		 
+		 // add the menu
+		 $("#includemenu").load("../ssi/topmenu.ssi"); 
+
+		// if an object_id is pre-selected, show it as the selected dropdown 
+		url = window.location.href;
+		name = 'object_id';
+		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		results = regex.exec(url);
+		object_id = decodeURIComponent(results[2].replace(/\+/g, " "));
+
+		 // populate the select form 
+		$.ajax({
+			 url: '../php/objectid.php?object_id=' + object_id, 
+			 type: "GET",
+			 success: function(data){
+			 	$( ".topmessage" ).html(data);
+			 },
+		}); 
+
+		// preview the images in json_string
+       $.getJSON('../data/json_string.json', function(data) {
+		   			   			   
+		   	$( ".previewimages" ).append(data.length + ' images in queue for S3 upload, here is a preview:<br><br>');
+				  $.each(data, function (key, val) {
+				  	$( ".previewimages" ).append('<img src="'+ val.url+'" width="50" height ="50"/>');
+				 }); // end .each loop 
+		}); // end getJSON loop 
+
+
+	    
+	    $("#enterbutton").click(function(event){
+					            
+	       $.getJSON('../data/json_string.json', function(data) {
+			   			   			   
+			   	$( "#whatscoming" ).html('<p>' +data.length + ' photos starting S3 upload<\/p>');
+				var photonum = 0;
+					
+					  $.each(data, function (key, val) {
+
+							$.ajax({
+								 url: '../php/upload_json.php', 
+								 type: "POST",
+								 data: ({filename: val.url, object_id:object_id}),
+								 success: function(data){
+									 var result = $.trim(data);
+									 //if (data.indexOf("none") != 2) {
+									 if (result != 'sweet pickles') {
+										  $('#stage').append('<p class="codered">' + val.url + '<br>red message: ' + data + '<\/p>');
+									  } else {
+										  // count the successful photos with photonum
+										  photonum++;
+										  $('#stage').append('<p class="codegreen"><b>' + photonum + '<\/b>- ' + val.url + '<br>green message: ' + data + '<\/p>');
+									  }
+								 },
+								error: function( objAJAXRequest, strError ){
+								$( "#response" ).text(
+									"Error! Type: " +
+									strError
+									);
+								}
+							});  
+							
+					 }); // end .each loop 
+					 					 				 				 
+			}); // end getJSON loop 
+						           
+	    });  // end button #driver click
+		            
+	 }); // end document ready
+	</script>
+  
+</head>
+
+<body>
+
+<div id="thewrapper">
+		
+ 	<div id="includemenu"></div>
+    
+    <div class="thecontent">
+    
+        <div class="titleleft">         
+            <h1>json_string.json upload images</h1>  
+        </div>
+
+		<div class="previewimages"></div>
+
+		<div class="topmessage"></div>
+    	<button type="button" id="enterbutton" class="btn">launch the rockets</button>
+    	
+       
+        <div class="box">
+        	<div id="whatscoming"></div>
+            <div id="stage"></div>
+		</div>
+    
+    </div><!-- end thecontent -->
+
+</div><!-- end thewrapper -->
+
+</body> 
+</html> 
+	

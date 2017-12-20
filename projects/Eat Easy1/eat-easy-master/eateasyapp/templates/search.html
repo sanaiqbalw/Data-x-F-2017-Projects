@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+  <div class="text-center">
+    <p class="lead"></p>
+      <h1>Search a Restaurant</h1>
+	  <form action="" method="POST">
+	    <div class="form-group col-md-4">
+	      <label>Restaurant</label>
+	      <input type="text" name="restaurant" class="form-control" value={{request.form.restaurant}}>
+	    </div>
+	    <div class="form-group col-md-4">
+	      <label>Likes, Preferences</label>
+	      <input type="text" name="likes" class="form-control" value={{request.form.likes}}>
+	    </div>
+	    <div class="form-group col-md-4">
+	      <label>Allergies, Dislikes</label>
+	      <input type="text" name="allergies" class="form-control" value={{request.form.allergies}}>
+	    </div>
+	    <button type="submit" class="btn btn-primary">Submit</button>
+	  </form>
+
+  </div>
+
+{% endblock %}

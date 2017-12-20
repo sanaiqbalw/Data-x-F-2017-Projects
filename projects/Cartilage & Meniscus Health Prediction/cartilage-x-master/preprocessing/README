@@ -1,0 +1,9 @@
+Cartilage flattening Matlab script
+
+The main script is main.m
+
+To run the C files from Matlab you should compile the C files.
+The compilation is different depending on the operating system so make sure to do it separately on every machine you run the code:
+Run in matlab: mex filename.c
+Need to have a C compiler, if not available install the one that Matlab suggests
+Creates a filename.mexw64 binary file that can be used as a normal matlab function

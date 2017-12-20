@@ -1,0 +1,105 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+    log in 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+	<title>login</title>	
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+  
+
+    .box {
+    position: fixed;
+    z-index: 999;
+    width: 40%;
+    height: 400px;
+    overflow: show;
+    margin: auto;
+    top: -15%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#thelogo {width:75px; text-align:center; margin: 0 0 30px 0;}
+
+.box fieldset { background-color:#FFFFFF; padding:0; }
+.boxform input {width:300px;}
+
+        #enterbutton.btn {clear:left; float:left; margin:20px 0 0 0;}
+
+        #password {clear:left; float:left;}
+        #messagearea {margin-bottom:20px; font-size:18px;}
+    </style>
+
+	<script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+	   $(document).ready(function() {
+
+            $( "#messagearea" ).text( 'password' );
+
+            // process login 
+            // $('#enterbutton').unbind('click').bind('click', function (e) {
+            $('#enterbutton').click(function() {   
+
+                $.ajax({                                      
+                    url: '../php/sessionpassword.php', 
+                    type: "POST",
+                    data: $('#passwordform').serialize(),
+                    success: function(data) {
+                        if (data == 'login') {
+                            $( "#messagearea" ).text( 'success: ' + data );
+                            window.location.assign("object.html");
+                        } else {
+                            $( "#messagearea" ).text( 'sorry, password is no bueno' );
+                        }
+                    }
+                }); 
+                // the return false on the button clixk prevents
+                // page from re-loading 
+                return false; 
+            }); 
+
+		});
+    </script> 
+
+</head> 
+ 
+<body>
+
+<div id="thewrapper">
+               
+    <div class="thecontent">
+
+
+
+        <div class="box">
+
+            <a href="object.html">
+            <img id="thelogo" src="../images/logo1.png" alt="logo"/>
+            </a>
+            <div id="messagearea"></div>
+            <form class="boxform" id="passwordform" action="">
+                <fieldset>
+                    <input type="text" id="password" name="password"> 
+                    <button class="btn" id="enterbutton">login</button>
+                </fieldset>
+            </form>
+            
+
+        </div>  
+        
+	</div> <!-- close "thecontent" -->
+</div> <!-- close "thewrapper" -->
+                
+</body> 
+</html> 

@@ -1,0 +1,12 @@
+Launching the Match N Merge Application
+ - Install the Flexx package, https://flexx.readthedocs.io/en/latest/
+ - Download the latest Match N Merge code by doing a GET on  https://github.com/rholbrook98/matchnmerge 
+ - Locate Jupyter notebook, MatchNMerge.ipynb
+ - Ensure that the following files do NOT exist in the current Jupyter notebook folder:  results.csv, columnMapping.csv, columnMapping_user.csv, filesReady.txt, status.txt.  If any of these exists, delete them on the filesystem
+- Open Jupyter notebook, MatchNMerge.ipynb
+- Note:  Juypter notebook must be run in Firefox, Mozilla
+- Note:  Default download file path for Firefox must be the folder where the notebook is located 
+- Select Kernel -> Restart & Run All
+- Javascript/HTML UI Application will be presented
+- Use "User UI Guidance" document as a guide to using this UI for column and row matching of two data sets
+- Use sfrestaurants1.csv and sfrestaurants2.csv as the two test data sets

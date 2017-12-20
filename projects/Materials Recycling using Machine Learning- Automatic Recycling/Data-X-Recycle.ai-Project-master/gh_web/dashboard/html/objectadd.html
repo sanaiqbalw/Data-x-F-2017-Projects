@@ -1,0 +1,202 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+    add an object form 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+	<title>object add</title>	
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+        .box {width:620px;}
+
+        .btnplus { border:0; border-radius:5px; color:#ffffff; cursor:pointer; float:right; font-size:20px; margin-top:-50px;  padding:7px; text-decoration:none; }
+        button:focus {outline:0 !important; }
+        .btnplus:hover { background-color:#8FD811;text-decoration:none; }
+
+    </style>
+
+	<script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+		
+	   $(document).ready(function() {
+
+
+            // check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+
+		  // load the left menu bar  
+		  $("#includemenu").load("../ssi/topmenu.ssi"); 
+                
+            // get bin pulldown
+            $.ajax({                                      
+                url: '../php/pulldownBin.php',
+                success: function(data) {
+                    $('#bin').append(data);
+                }
+            });  
+
+            // get material pulldown
+            $.ajax({                                      
+                url: '../php/pulldownMaterial.php',
+                success: function(data) {
+                    $('#material').append(data);
+                }
+            });  
+
+            // get object_tupe pulldown
+            $.ajax({                                      
+                url: '../php/pulldownObjecttype.php',
+                success: function(data) {
+                    $('#object_type').append(data);
+                }
+            });  
+
+            $('.bininput').hide();
+            $("#addbin").on('click', function() {
+                $('.bininput').show();
+                $('.binselect').hide();
+            });
+
+            $('.materialinput').hide();
+            $("#addmaterial").on('click', function() {
+                $('.materialinput').show();
+                $('.materialselect').hide();
+            });
+
+            $('.object_typeinput').hide();
+            $("#addobject_type").on('click', function() {
+                $('.object_typeinput').show();
+                $('.object_typeselect').hide();
+            });
+
+		  		// submit the form 
+			$('#enterbutton').click(function() {		
+				// populate the table 
+				$.ajax({                                      
+					url: '../php/objectadd.php', 
+					type: "POST",
+					data: $('#raisform').serialize(),
+					success: function(resultdata) {
+						// alert('hello'+resultdata);
+						window.location.replace("object.html");
+					},
+					error: function(resultdata){
+						 alert('hello'+resultdata);
+					}
+				});  // end ajax 
+			}); 
+		 
+		});
+    </script> 
+
+</head> 
+ 
+<body>
+
+<div id="thewrapper">
+
+	<div id="includemenu"></div>
+               
+    <div class="thecontent">
+    
+        <div class="titleleft">         
+            <h1>add object</h1>      
+        </div>
+       
+        <div class="box">
+
+            <form class="boxform" id="raisform" method="POST" action="">
+            <fieldset>
+            
+            <div class="binselect">
+                <label for="bin"><span>bin</span>
+                    <select id="bin" name="bin">
+                    <option value="" disabled selected>select bin</option>
+                    </select>
+                </label>  
+                <button type="button" id="addbin" class="btnplus">+</button>
+            </div> 
+
+            <div class="bininput">
+                <label for="bininput"><span>bin</span>
+                    <input type="text" id="bininput" name="bininput"> 
+                </label> 
+            </div>
+
+            <div class="materialselect">
+                <label for="material"><span>material</span>
+                    <select id="material" name="material">
+                    <option value="" disabled selected>select material</option>
+                    </select>
+                </label> 
+                <button type="button" id="addmaterial" class="btnplus">+</button>
+            </div>
+
+            <div class="materialinput">
+                <label for="materialinput"><span>material</span>
+                    <input type="text" id="materialinput" name="materialinput"> 
+                </label> 
+            </div>
+
+            <div class="object_typeselect">
+                <label for="object_type"><span>object_type</span>
+                    <select id="object_type" name="object_type">
+                    <option value="" disabled selected>select object_type</option>
+                    </select>
+                </label> 
+                <button type="button" id="addobject_type" class="btnplus">+</button>
+            </div>
+
+            <div class="object_typeinput">
+                <label for="object_typeinput"><span>object_type</span>
+                    <input type="text" id="object_typeinput" name="object_typeinput"> 
+                </label> 
+            </div>
+
+            <label for="level1"><span>level1</span>
+                <input type="text" id="level1" class="raiinput" name="level1"> 
+            </label> 
+    
+            <label for="level2"><span>level2</span>
+                <input type="text" id="level2" name="level2"> 
+            </label>  
+            
+            <label for="level3"><span>level3</span>
+                <input type="text" id="level3" name="level3">
+            </label> 
+            
+            <label for="level4"><span>level4</span>
+                <input type="text" id="level4" name="level4"> 
+            </label> 
+            
+            <label for="sku"><span>sku</span>
+                <input type="text" id="sku" name="sku"> 
+            </label> 
+            
+           <button type="button" id="enterbutton" class="btn">enter</button>
+    
+            </fieldset>
+            </form>
+
+        </div>  
+        
+	</div> <!-- close "thecontent" -->
+</div> <!-- close "thewrapper" -->
+                
+</body> 
+</html> 

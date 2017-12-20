@@ -1,0 +1,94 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	check system for errors  
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>db schema</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+
+    .gobutton { background-color:#48DC5F;  border:0; border-radius:15px; color:#ffffff; cursor:pointer; font-family:Arial; font-size:20px; margin:5px 0 0 0px; padding:7px 10px 7px 10px; text-decoration:none; }
+    .gobutton:hover { background-color:#99F8A7;text-decoration:none; }
+    .ametric {background-color:#E1E1E1; width:90%; padding:5px 20px 20px 20px; margin-bottom:10px;}
+    </style>
+    
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+		$(document).ready(function() {
+			// load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+
+            // Name of bucket in S3
+            $(".bucketsused").load('../php/systemBucketsused.php');
+
+            // Size of S3 Bucket 
+            $("#button_bucketsize").on('click', function() {
+                $(".bucketsize").text('adding up sizes ...');
+                $(".bucketsize").load('../php/systemBucketsize.php');
+                $(".button_bucketsize").hide();
+            });
+
+            // Number of objects
+            $("#button_countobjects").on('click', function() {
+                $(".countobjects").text('counting ...');
+                $(".countobjects").load('../php/systemCountobjects.php');
+                $(".button_countobjects").hide();
+            });
+
+		});
+    </script> 
+
+</head>  
+ 
+<body> 
+
+<div id="thewrapper">
+            
+    <div id="includemenu"></div>
+    
+    <div class="thecontent">
+
+        <h1>system checks</h1>
+
+        <div class="ametric">
+            <h2>S3 buckets</h2>
+            <div class="bucketsused"></div>
+        </div>
+
+        <div class="ametric">
+            <h2>Total storage bytes used</h2>
+            <div class="bucketsize"></div>
+            <button id="button_bucketsize" class="gobutton">go</button>
+         </div>       
+
+         <div class="ametric">
+            <h2>Number of objects</h2>
+            <div class="countobjects"></div>
+            <button id="button_countobjects" class="gobutton">go</button>
+        </div>
+
+        <div class="ametric">
+             <h2><a href="https://console.aws.amazon.com/trustedadvisor/home?#/dashboard" target="_blank">Amazon Trusted Advisor Dashboard</a></h2>
+        </div>
+
+        <div class="ametric">
+             <h2><a href="https://console.aws.amazon.com/billing/home?#/" target="_blank">Billing Dashboard</a></h2>
+        </div>
+
+
+    
+    </div><!-- end thecontent -->
+</div><!-- wrapper -->
+     
+ 
+</body> 
+</html> 

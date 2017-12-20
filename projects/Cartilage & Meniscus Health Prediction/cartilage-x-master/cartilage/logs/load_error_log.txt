@@ -1,0 +1,6 @@
+/data/bigbone4/DeepLearning_temp/Data/all_CUBE/P50/ACL056_2_ipsi.mat
+/data/bigbone4/DeepLearning_temp/Data/all_CUBE/P50/ACL018_1_contra.mat
+/data/bigbone4/DeepLearning_temp/Data/all_CUBE/P50/ACL056_2_ipsi.mat
+/data/bigbone4/DeepLearning_temp/Data/all_CUBE/P50/ACL018_1_contra.mat
+/data/bigbone4/DeepLearning_temp/Data/all_CUBE/P50/ACL056_2_ipsi.mat
+/data/bigbone4/DeepLearning_temp/Data/all_CUBE/P50/ACL018_1_contra.mat

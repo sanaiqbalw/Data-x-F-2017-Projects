@@ -1,0 +1,94 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	object table in dataTables 
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>objects</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/table.css" rel="stylesheet" type="text/css">
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+
+  	<script src="../js/jquery-3.1.1.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>  
+    
+    <script> 
+	  $(document).ready(function() {
+
+	  		// check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+		  
+		  // load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+					  
+			$('#object_table').DataTable( {
+				"ajax": "../php/objectdata.php",
+				"pageLength": 25,
+				order: [[0, "desc"]],
+				"columns": [
+					{ "data": "object_id",  "render": function(data, type, full, meta) {
+                		return '<a href="../html/objectedit.html?object_id=' + data + '">' + data + '<\/a>'; }},
+                	{ "data": "object_id",  "render": function(data, type, full, meta) {
+                		return '<img src="../s3store/images/'+data+'.jpg" width="50">'; }},
+					{ "data": "bin" },
+					{ "data": "material" },
+					{ "data": "object_type" },
+					{ "data": "level1" },
+					{ "data": "level2" },
+					{ "data": "level3" },
+					{ "data": "level4" },
+					{ "data": "sku" }
+				],
+			}); // end DataTable 
+		}); // end document ready
+	
+    </script>
+	
+</head> 
+ 
+<body> 
+
+<div id="thewrapper">
+
+	<div id="includemenu"></div>
+	            
+	<div class="thecontent">
+		<h1>object</h1>
+
+		<p><a href="../html/objectadd.html">add object</a></p>                                           
+
+		<table id="object_table" class="display" summary="object table" width="100%">
+	        <thead>
+	            <tr>
+	                <th>object_id</th>
+	                <th>thumbnail</th>
+	                <th>bin</th>
+	                <th>material</th>
+	                <th>object_type</th>
+	                <th>level1</th>
+	                <th>level2</th>
+	                <th>level3</th>
+	                <th>level4</th>
+                    <th>sku</th>
+	            </tr>
+	        </thead>
+		</table>          
+		    
+	</div><!-- end thecontent -->
+</div><!-- wrapper -->
+     
+ 
+</body> 
+</html> 

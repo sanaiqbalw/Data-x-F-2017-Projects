@@ -1,0 +1,296 @@
+advancement
+advncmnt
+additional
+add’l
+advisor
+advsr
+aeromedical evacuation
+MEDEVAC or aeromed evac
+aircraft
+acft
+aircraft commander
+acft CC
+air evacuation (not medical)
+AIREVAC or air evac
+airfield
+afld
+airlift
+alft
+approve, approved
+apprv, apprv’d
+airfield
+afld
+assessment
+assmnt
+assign, assignment
+asgn, asgnmt
+assist, assisted
+asst, asst’d
+association
+assoc
+authorized
+auth
+award
+awd
+between
+btwn
+board
+brd
+branch
+brnch
+cannibalization
+CANN
+casualty report
+CASREP or casrep
+center
+ctr(s)
+certification, certified
+cert, cert’d
+CGO of the Quarter/Year
+CGOQ, CGOY
+change
+chg
+chief
+chf (for duty titles only, not for CMSgt)
+civilian
+civ
+clearance
+clrnc
+combat
+cmbt or cbt
+command
+cmd or Cmd (if in lieu of MAJCOM/NAF)
+commander
+CC in most cases, otherwise cdr, CDR for Navy O-6s
+control
+ctrl
+coordinate, coordination
+coord
+course
+crs
+crewmembers
+crewmbrs
+decision
+dcsn
+delivered
+dlvr’d
+develop/development
+dvlp/dvlpmnt
+division
+Div or div
+double
+dbl
+Etcetera
+etc
+engines
+engs
+engineer
+engnr
+enlisted
+enl
+equipment
+eqpt
+environment
+enviro
+excellence
+excel
+exercise
+ex
+estimate
+est
+evaluation
+eval
+flight
+Flt (organizational) or flt (action)
+field
+fld
+Fiscal Year 2004
+FY04
+forward
+fwd
+government
+gov’t or govt
+ground
+grnd
+group
+gp
+headquarters
+HQ
+heavy
+hvy
+highway
+hwy
+hours
+hrs
+hurricane evacuation
+HUREVAC or hurricane evac
+identify
+ID
+indoctrination
+indoc
+inspection
+insp
+instructor
+instr (if referring to flying use “IP”)
+international
+int’l, Int’l
+Joint
+Jt or Jnt (capitalized to reference joint service…Army, AF, Navy, USMC)
+Junior Company Grade Officer
+Jr CGO
+leader
+ldr
+leadership
+ldrshp
+letter
+ltr
+level
+lvl
+maintenance
+mx
+malfunction
+malfunc
+manage, managed
+mng, mng’d
+manager
+mgr
+management
+mgmt
+manpower
+mnpwr
+maximum
+max
+member, members
+mbr, mbrs
+message
+msg
+mission
+msn
+month, months
+mth or mo, mths or mos
+movement
+mvmt
+national
+nat’l, Nat’l
+navigator
+nav
+officer
+ofcr
+on or about
+o/a
+operations
+ops
+opportunity, opportunities
+opp, opps
+organization
+org
+package
+pkg
+passenger
+pax or PAX
+patient
+pt (medical)
+personnel
+prsnl
+pilot
+plt
+Plan
+pln
+position
+psn
+power
+pwr
+process, processed
+prcs, prcs’d
+professional
+prof
+program
+pgm
+project, projected
+proj, prjct, prjct’d
+promotion(s)
+promo(s)
+quality
+qual
+quality of life
+QoL
+quarter, quarterly
+qtr, qtrly
+ready
+rdy
+received
+rcvd
+recommendation
+rec
+record
+rcrd
+report, reporting, reported
+rpt, rpt’g, rpt’d
+representative
+rep
+requalify
+requal
+requirement, requirements
+rqmt, rqmts
+review, reviewed
+rvw, rvw’d
+schedule
+sched
+Secretary of Defense
+SecDef
+Senior Company Grade Officer
+Sr CGO
+service (s)
+svc(s)
+simulator
+sim
+special operations
+Spcl Ops or Spec Ops
+squadron
+sq
+staff
+staff
+standard
+std
+Standardization and Evaluation
+stan/eval
+support/supported
+spt/spt’d
+system
+sys
+target
+tgt
+team
+tm
+trained
+trn’d
+training
+tng
+transfer
+xfer
+travel
+tvl
+university
+univ
+vehicle
+veh
+visibility (high)
+vis or high-vis
+weapon
+wpn
+wing
+wg
+with
+w/
+without
+w/o
+within
+w/in
+working, worked
+wrk’g, wrk’d
+yard(s)
+yrd(s)
+year
+yr
+2003, 2004, etc
+’03, ’04

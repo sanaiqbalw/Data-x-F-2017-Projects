@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Restaurants</h1>
+  <ul class="list-group">
+    {% for r in restaurants %}
+    	<li class="list-group-item"><a href="restaurant/{{r.rest_name}}">{{r.rest_name}}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

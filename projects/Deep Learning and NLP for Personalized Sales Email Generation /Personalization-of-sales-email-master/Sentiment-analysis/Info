@@ -1,0 +1,21 @@
+The Dataset:
+We used the Enron email dataset for the purposes of sentiment analysis. The dataset was obtained from Kaggle.
+The dataset has 517401 rows consisting of the file name and the email message as two columns. A sample of the email message file is given below:
+ 
+Data pre-processing:
+Most of the data above was irrelevant to our analysis. We extracted the data from the message file using python tools pandas, sys, os and email into a pandas dataframe [1]. The emails were then sorted in ascending order of datetime. All the columns except for the subject and the body of the email (or content) were removed.
+After extracting the relevant data, rows with NaN values were removed, the content of the emails was cleaned and irrelevant characters removed using nltk and regex [2].
+
+Data Classification:
+The ‘content’ data was manually classified into 4 categories as follows:
+1.	Positive: The emails with an overall positive connotation.
+2.	Neutral: Generic emails like information, notices, etc
+3.	Negative: The emails with an overall negative connotation
+4.	Enquiry: The emails which ‘ask’ for details and information
+
+Sentiment analysis and reply:
+The manually labelled dataset was used for training the random forest classifier model using 50 estimators. Based on the trained model, when there is an incoming mail, it can be fed into the model to predict the sentiment. Based on the predicted sentiment, conditional statements are used to select a pre-drafted reply.
+
+References:
+1.  Dataset retrieved from: https://www.kaggle.com/wcukierski/enron-email-dataset
+2.  https://www.kaggle.com/zichen/explore-enron/notebook

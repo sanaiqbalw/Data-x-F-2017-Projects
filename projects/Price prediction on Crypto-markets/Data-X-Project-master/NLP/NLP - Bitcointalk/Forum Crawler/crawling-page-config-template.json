@@ -1,0 +1,8 @@
+{
+	// bitcointalk, ripplecoin, litecointalk, ethereum
+	"community":"ripplecoin",
+	"page": {
+		// pageno >= 1
+		"pageno": 1
+	}
+}	

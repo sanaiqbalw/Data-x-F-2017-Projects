@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<html>
+<head> 
+
+<!--
+	shows database schema tables  
+-->
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<title>db schema</title>
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">    
+    <link href="../css/ops.css" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+        table, th, td {
+       border: 1px solid black; border-collapse: collapse; padding:3px;
+    }
+    </style>
+    
+    <script src="../js/jquery-3.1.1.min.js"></script>
+    
+    <script> 
+		$(document).ready(function() {
+
+            // check login session
+            $.ajax({                                      
+                url: '../php/session.php',
+                success: function(data) {
+                    if (data != "login") {
+                        window.location.assign("login.html");
+                    } 
+                }
+            });  
+
+			// load the left menu bar  
+			$("#includemenu").load("../ssi/topmenu.ssi"); 
+			$("#schema").load("../php/schema.php");
+		});
+    </script> 
+
+</head>  
+ 
+<body> 
+
+<div id="thewrapper">
+            
+    <div id="includemenu"></div>
+    
+    <div class="thecontent">
+    <h1>database schema</h1> 
+    
+    	<div id="schema"></div>
+    
+    </div><!-- end thecontent -->
+</div><!-- wrapper -->
+     
+ 
+</body> 
+</html> 
